@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 // MongoDB Connection
 const connectDB = async () => {
   try {
-    // Using local MongoDB instance
-    const conn = await mongoose.connect('mongodb://localhost:27017/finance_tracker', {
+    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/finance_tracker';
+    const conn = await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

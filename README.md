@@ -39,11 +39,22 @@ Before running the application, make sure you have:
 ### Step 1: Install Dependencies
 
 ```bash
-cd c:\Users\Admin\Desktop\Sigma\video18
+cd c:\Users\Admin\Desktop\Sigma\personal finance traker
 npm install
 ```
 
-### Step 2: Start MongoDB
+### Step 2: Configure Environment Variables
+
+Create a `.env` file in the project root with the MongoDB connection string and optional port:
+
+```env
+MONGO_URI=mongodb://localhost:27017/finance_tracker
+PORT=3000
+```
+
+If you use MongoDB Atlas, set `MONGO_URI` to your Atlas connection string.
+
+### Step 3: Start MongoDB
 
 **Option A: Local MongoDB**
 ```bash
