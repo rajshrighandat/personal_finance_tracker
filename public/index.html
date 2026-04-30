@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Finance Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>💰 Personal Finance Tracker</h1>
+      <p>Track your income and expenses</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Summary Section -->
+      <section class="summary-section">
+        <div class="summary-card income-card">
+          <div class="summary-label">Total Income</div>
+          <div class="summary-amount income">$<span id="totalIncome">0.00</span></div>
+        </div>
+        <div class="summary-card expense-card">
+          <div class="summary-label">Total Expense</div>
+          <div class="summary-amount expense">$<span id="totalExpense">0.00</span></div>
+        </div>
+        <div class="summary-card balance-card">
+          <div class="summary-label">Balance</div>
+          <div class="summary-amount balance">$<span id="balance">0.00</span></div>
+        </div>
+      </section>
+
+      <!-- Form Section -->
+      <section class="form-section">
+        <h2 id="formTitle">Add Transaction</h2>
+        <form id="transactionForm" class="transaction-form">
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <input
+              type="number"
+              id="amount"
+              name="amount"
+              placeholder="Enter amount"
+              step="0.01"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="type">Type</label>
+            <select id="type" name="type" required>
+              <option value="">-- Select Type --</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+              <option value="">-- Select Category --</option>
+              <option value="Salary">Salary</option>
+              <option value="Freelance">Freelance</option>
+              <option value="Investment">Investment</option>
+              <option value="Groceries">Groceries</option>
+              <option value="Utilities">Utilities</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Transport">Transport</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Education">Education</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+
+          <button type="submit" class="btn btn-submit" id="submitBtn">Add Transaction</button>
+          <button type="button" class="btn btn-cancel" id="cancelBtn">Cancel</button>
+        </form>
+      </section>
+
+      <!-- Charts Section -->
+      <section class="charts-section">
+        <h2>Analytics</h2>
+        <div class="charts-container">
+          <div class="chart-box">
+            <h3>Expense Distribution</h3>
+            <canvas id="expenseChart"></canvas>
+          </div>
+          <div class="chart-box">
+            <h3>Income vs Expense</h3>
+            <canvas id="incomeExpenseChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filter & Search Section -->
+      <section class="filter-section">
+        <h2>Search & Filter</h2>
+        <div class="filter-controls">
+          <div class="filter-group">
+            <label for="searchInput">Search</label>
+            <input type="text" id="searchInput" placeholder="Search by category, amount..." />
+          </div>
+
+          <div class="filter-group">
+            <label for="categoryFilter">Category</label>
+            <select id="categoryFilter">
+              <option value="">All Categories</option>
+              <option value="Salary">Salary</option>
+              <option value="Freelance">Freelance</option>
+              <option value="Investment">Investment</option>
+              <option value="Groceries">Groceries</option>
+              <option value="Utilities">Utilities</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Transport">Transport</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Education">Education</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="typeFilter">Type</label>
+            <select id="typeFilter">
+              <option value="">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="dateFromFilter">From Date</label>
+            <input type="date" id="dateFromFilter" />
+          </div>
+
+          <div class="filter-group">
+            <label for="dateToFilter">To Date</label>
+            <input type="date" id="dateToFilter" />
+          </div>
+
+          <button class="btn btn-filter" id="resetFilterBtn">Reset Filters</button>
+        </div>
+      </section>
+
+      <!-- Transactions Table Section -->
+      <section class="table-section">
+        <h2>Transactions</h2>
+        <div class="table-responsive">
+          <table id="transactionsTable" class="transactions-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr>
+                <td colspan="5" class="empty-message">No transactions yet. Add one to get started!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Alert Container -->
+  <div id="alertContainer"></div>
+
+  <!-- Edit Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Edit Transaction</h2>
+      <form id="editForm">
+        <div class="form-group">
+          <label for="editAmount">Amount</label>
+          <input type="number" id="editAmount" step="0.01" required />
+        </div>
+        <div class="form-group">
+          <label for="editType">Type</label>
+          <select id="editType" required>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="editCategory">Category</label>
+          <select id="editCategory" required>
+            <option value="Salary">Salary</option>
+            <option value="Freelance">Freelance</option>
+            <option value="Investment">Investment</option>
+            <option value="Groceries">Groceries</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Transport">Transport</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Education">Education</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="editDate">Date</label>
+          <input type="date" id="editDate" required />
+        </div>
+        <div class="modal-buttons">
+          <button type="submit" class="btn btn-submit">Save Changes</button>
+          <button type="button" class="btn btn-cancel" id="closeModalBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
